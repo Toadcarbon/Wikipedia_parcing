@@ -1,0 +1,35 @@
+import wikipedia
+import sys
+from docx import Document
+document = Document()
+document.add_heading('', 0)#Name of the heading of the file
+words = ""#Put key words here
+i = 0
+wikipedia.set_lang("ru") #language
+wrong = []
+words = words.split(',')
+print(words)
+for elem in words:
+    try:
+        try:
+            print(len(words)- i)
+            word_request = elem
+            res = wikipedia.search(word_request)
+            number = 1
+            document.add_paragraph(elem).bold = True
+            ny = wikipedia.summary(word_request)
+            document.add_paragraph(ny)
+            document.add_paragraph('')
+            i += 1
+        except wikipedia.exceptions.PageError :
+            wrong.append(elem)
+            i += 1
+            continue
+    except wikipedia.exceptions.DisambiguationError:
+        wrong.append(elem)
+        i += 1
+        continue
+
+print('Errors:', len(wrong))
+print(wrong)
+document.save('')#type name of the file here .docx
